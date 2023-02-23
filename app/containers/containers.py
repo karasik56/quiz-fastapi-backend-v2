@@ -8,6 +8,7 @@ from app.services.users import UserService
 
 
 class AsyncSessionProvider(resources.AsyncResource):
+    """ Контекстный менеджер для Dependency-injector """
     async def init(self, sessionmaker) -> AsyncSession:
         return sessionmaker()
 
@@ -23,13 +24,14 @@ class Container(containers.DeclarativeContainer):
         settings.REAL_DATABASE_URL,
         future=True,
         echo=True,
+        execution_options={"isolation_level": "AUTOCOMMIT"},
     )
 
     async_session = providers.Singleton(
         sessionmaker,
         bind=db_engine,
         expire_on_commit=False,
-        class_=AsyncSession
+        class_=AsyncSession,
     )
 
     async_session = providers.Resource(AsyncSessionProvider, async_session)
