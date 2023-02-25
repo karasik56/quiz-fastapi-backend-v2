@@ -1,9 +1,9 @@
 from logging import getLogger
 
-from fastapi import APIRouter, Depends, HTTPException, Response
+from fastapi import APIRouter, Depends, HTTPException
 from dependency_injector.wiring import inject, Provide
 from sqlalchemy.exc import IntegrityError
-from starlette import status
+from fastapi import status
 
 from app.containers.containers import Container
 from app.schemas.users import UserCreate, ShowUser, DeleteUser

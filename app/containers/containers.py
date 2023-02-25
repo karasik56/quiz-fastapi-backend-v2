@@ -18,6 +18,10 @@ class AsyncSessionProvider(resources.AsyncResource):
 
 class Container(containers.DeclarativeContainer):
     config = providers.Configuration()
+    wiring_config = containers.WiringConfiguration(modules=[
+        'app.routers.handlers',
+        'app.routers.login_handlers'
+    ])
 
     db_engine = providers.Singleton(
         create_async_engine,
