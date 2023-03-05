@@ -20,7 +20,8 @@ class Container(containers.DeclarativeContainer):
     config = providers.Configuration()
     wiring_config = containers.WiringConfiguration(modules=[
         'app.routers.handlers',
-        'app.routers.login_handlers'
+        'app.routers.login_handlers',
+        'app.routers.user_handlers',
     ])
 
     db_engine = providers.Singleton(
@@ -36,6 +37,7 @@ class Container(containers.DeclarativeContainer):
         bind=db_engine,
         expire_on_commit=False,
         class_=AsyncSession,
+        autoflush=True,
     )
 
     async_session = providers.Resource(AsyncSessionProvider, async_session)

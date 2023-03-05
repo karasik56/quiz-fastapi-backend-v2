@@ -47,6 +47,10 @@ class DeleteUser(BaseModel):
     user_id: uuid.UUID
 
 
+class GetUserByID(BaseModel):
+    user_id: uuid.UUID
+
+
 class Token(BaseModel):
     access_token: str
     token_type: str

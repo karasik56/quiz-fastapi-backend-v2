@@ -6,15 +6,15 @@ from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from fastapi import status
 
 from app.config import settings
-from app.models.models import AuthUser
 from app.schemas.users import Token
 from app.services.users import UserService
+from app.utils.auth import oauth2_scheme
 from app.utils.security import create_access_token
 from app.containers.containers import Container
 
 login_router = APIRouter()
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/token")
+
 @login_router.post("/token", response_model=Token)
 @inject
 async def login_for_access_token(

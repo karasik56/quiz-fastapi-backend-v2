@@ -33,15 +33,16 @@ class UserService:
         user = await self._repository.delete(user_id=user_id)
         return user
 
-    async def get_user_by_id(self, user_id: DeleteUser):
+    async def get_user_by_id(self, user_id):
         user = await self._repository.get(user_id=user_id)
-        return ShowUser(
-            user_id=user.user_id,
-            name=user.name,
-            surname=user.surname,
-            email=user.email,
-            is_active=user.is_active,
-        )
+        if user is not None:
+            return ShowUser(
+                user_id=user.user_id,
+                name=user.name,
+                surname=user.surname,
+                email=user.email,
+                is_active=user.is_active,
+            )
 
     async def authenticate_user(self, email: str, password: str) -> Union[AuthUser, None]:
         user: AuthUser = await self._get_user_by_email_for_auth(email=email)
