@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 
 from jose import jwt, JWTError
 
@@ -72,3 +72,10 @@ class UserService:
         if user is None:
             raise credentials_exception
         return user
+
+
+
+
+
+
+
