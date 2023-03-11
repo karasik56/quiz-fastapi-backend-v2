@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import Column, String, Boolean
+from sqlalchemy import Column, String, Boolean, Integer
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -16,3 +16,7 @@ class AuthUser(Base):
     email = Column(String, nullable=False, unique=True)
     is_active = Column(Boolean, default=True)
     hashed_password = Column(String, nullable=False)
+    is_admin = Column(Boolean, default=False)
+
+
+

@@ -16,8 +16,6 @@ logger = getLogger(__name__)
 
 user_router = APIRouter()
 
-allow_resource = RoleChecker(only_admin=True)
-
 
 @user_router.post("/", response_model=ShowUser, status_code=status.HTTP_201_CREATED)
 @inject
@@ -31,7 +29,10 @@ async def create_user(
         raise HTTPException(status_code=503, detail=f"Database error: {err}")
 
 
-@user_router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT, dependencies=[Depends(allow_resource)])
+@user_router.delete("/{user_id}",
+                    status_code=status.HTTP_204_NO_CONTENT,
+                    dependencies=[Depends(Provide[Container.role_check])],
+                    )
 @inject
 async def delete_user(user_id,
                       user_service: UserService = Depends(Provide[Container.user_service]),
@@ -47,7 +48,7 @@ async def delete_user(user_id,
 
 @user_router.get("/{user_id}", status_code=status.HTTP_200_OK,
                  response_model=ShowUser,
-                 dependencies=[Depends(allow_resource)]
+                 dependencies=[Depends(Provide[Container.role_check])],
                  )
 @inject
 async def get_user_by_id(user_id: uuid.UUID,

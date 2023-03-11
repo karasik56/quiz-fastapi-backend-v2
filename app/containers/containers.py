@@ -1,9 +1,11 @@
 from dependency_injector import containers, providers, resources
+
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
 from app.config import settings
 from app.repositories.user import UserRepository
+from app.services.roles import RoleChecker
 from app.services.users import UserService
 
 
@@ -51,3 +53,9 @@ class Container(containers.DeclarativeContainer):
         UserService,
         user_repository=user_repository
     )
+
+    role_check = providers.Factory(
+        RoleChecker,
+        user_service=user_service
+    )
+
