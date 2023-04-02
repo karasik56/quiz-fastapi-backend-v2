@@ -4,12 +4,9 @@ import uuid
 from fastapi import HTTPException
 from pydantic import BaseModel, EmailStr, validator
 
+from app.schemas.base import TunedModel
+
 LETTER_MATCH_PATTERN = re.compile(r"^[а-яА-Яa-zA-Z\-]+$")
-
-
-class TunedModel(BaseModel):
-    class Config:
-        orm_mode = True
 
 
 class ShowUser(TunedModel):

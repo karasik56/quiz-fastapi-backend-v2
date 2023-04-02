@@ -4,7 +4,7 @@ from jose import jwt, JWTError
 
 from app.config import settings
 from app.models.models import AuthUser
-from app.repositories.user import UserRepository
+from app.repositories.users import UserRepository
 from app.schemas.users import ShowUser, UserCreate, DeleteUser
 from app.utils.exceptions.user_exceptions import credentials_exception
 from app.utils.hashing import Hasher

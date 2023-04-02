@@ -1,5 +1,6 @@
 import uuid
 from logging import getLogger
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
 from dependency_injector.wiring import inject, Provide
@@ -48,13 +49,17 @@ async def delete_user(user_id,
 
 @user_router.get("/{user_id}", status_code=status.HTTP_200_OK,
                  response_model=ShowUser,
-                 dependencies=[Depends(Provide[Container.role_check])],
                  )
 @inject
 async def get_user_by_id(user_id: uuid.UUID,
+                         check_role: RoleChecker = Depends(Provide[Container.role_check]),
                          user_service: UserService = Depends(Provide[Container.user_service]),
-                         token: str = Depends(oauth2_scheme)
+                         token: str = Depends(oauth2_scheme),
                          ):
+    is_admin = await check_role(token)
+    if not is_admin:
+        raise HTTPException(status_code=403, detail="Operation not permitted")
+
     user = await user_service.get_user_by_id(user_id)
     if user is None:
         raise HTTPException(
